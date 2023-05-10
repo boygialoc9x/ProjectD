@@ -1,5 +1,9 @@
 #include "Attribute.h"
 
-bool Attribute::init()
-{
-}
+MARK_CONSTRUCTOR
+
+MARK_VIRTUAL
+
+MARK_STATIC
+
+MARK_FUNCTION

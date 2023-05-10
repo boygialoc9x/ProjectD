@@ -254,12 +254,13 @@ public:                                                     \
     virtual void log();                                 	\
     __NAME__();                                         	\
 private:                                               		\
-	std::string p_sClassName = #__NAME__;               	\
+	std::string p_sClassName = #__NAME__;                   \
 
 #define END_CREATE_CLASS };
 
 #define END_CREATE_CLASS_WITH_TYPE_DEF(__NAME__, __TYPE_DEF__) \
 using __TYPE_DEF__ = __NAME__;                                 \
+};                                                             \
 
 /**
  * 	@des Easy write down the log() function
@@ -349,10 +350,29 @@ inline static void cleaner(__TYPE__ *pElement) \
 	CC_SAFE_DELETE(pElement); \
 }
 
+
+///////////////////] QUICK COMMENT MACROS ZONE
+
 /**
  * Mark the class as an abstract class
  */
 #define ZY_ABS
+
+#define MARK_CONSTRUCTOR /** @def Begin implement all Constructor function */
+#define MARK_VIRTUAL /** @def Begin implement all Virtual function */
+#define MARK_STATIC /** @def Begin implement all Static function */
+#define MARK_FUNCTION /** @def Begin implement all function */
+
+///////////////////] QUICK MACROS ZONE
+
+#define OVR override
+#define VIR virtual
+#define CON const
+#define STT static
+
+#define QUICK_GET_INSTANCE(_NAME_) _NAME_::getInstance()
+
+///////////////////] QUICK CLASS MACROS ZONE
 
 /**
  * @def List all your customize variable here.
