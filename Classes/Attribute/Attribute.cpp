@@ -1,9 +1,15 @@
 #include "Attribute.h"
 
+MARK_STATIC
+
 MARK_CONSTRUCTOR
 
 MARK_VIRTUAL
 
-MARK_STATIC
+bool ATT::init()
+{
+
+}
+
 
 MARK_FUNCTION

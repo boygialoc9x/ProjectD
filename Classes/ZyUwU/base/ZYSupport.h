@@ -51,7 +51,7 @@ ZY_SP_FLOATING_NOTIFY(__TARGET_NODE__, __MESSAGE__, __TTFCONFIG__, __COLOR3B__, 
 class ZYLabel;
 BEGIN_CREATE_INSTANCE_REFCLASS(ZYSupport, cocos2d::Ref)
 
-public:
+GLO:
     std::string shorterDecimal(float fNum, int nLength);
     std::string numberToString(float fNum);
     std::string sizeToString(cocos2d::Size size);
@@ -61,18 +61,18 @@ public:
     std::string smartRoundingFloat(float num, int length);
     void fitStringInSize(zy::ZYLabel* pLabel, std::string str, cocos2d::Size borderSize, int nMinFontSize = 14);
 
-public:
+GLO:
     void floatingNotify(Node* target, const std::string& message, const TTFConfig& ttf, const Color3B& color, const Point& position, const int& order = 1, const float& duration = 1.5f, bool isLock = false);
 
-public:
+GLO:
     bool isInt(float fNum);
     bool isOdd(int nNum);
 
-public:
+GLO:
     float radToDegree(float fRad);
     float degreeToRad(float fDegree);
 
-public:
+GLO:
     const Color3B& convert4FTo3B(const Color4F& color);
 
 END_CREATE_INSTANCE_REFCLASS

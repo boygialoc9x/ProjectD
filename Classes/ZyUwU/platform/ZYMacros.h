@@ -2,6 +2,8 @@
 
 #include "../../../cocos2d/cocos/cocos2d.h"
 
+///////////////////] QUICK FUNCTION
+
 /** @def INIT_CHECKER(__CC_TYPE__, __CC_ID__)
  *  @des Define a auto check valid function for a specific type such as Sprite
  *
@@ -132,6 +134,32 @@ static __TYPE__* create(bool bIsAutoRelease = true)        \
 }                                \
 
 
+///////////////////] QUICK CLASS GENERATE
+
+/**
+ * @def BEGIN_CREATE_ABSCLASS(__NAME__)
+ *
+ * @des generate a new abastract class
+ *
+ * @prama __NAME__ The new class's name
+ *
+ * @func public: __NAME__() -> Declare the constructor function of the class
+ */
+#define BEGIN_CREATE_ABSCLASS(__NAME__)                 \
+class ZY_ABS __NAME__                                   \
+{                                                       \
+GLO:                                                    \
+    virtual bool init() = 0;                            \
+    virtual std::string toString(int nTab = 2) = 0;     \
+    virtual void log() = 0;                             \
+    __NAME__();                                         \
+	~__NAME__();                                        \
+private:                                               	\
+	const std::string p_sClassName = #__NAME__;         \
+
+#define END_CREATE_ABSCLASS };
+
+
 /**
  * @def BEGIN_CREATE_REFCLASS(__NAME__, __REF_CLASS__)
  * @des Define a new class inherits other class
@@ -147,17 +175,18 @@ static __TYPE__* create(bool bIsAutoRelease = true)        \
  *
  * @warning Must call END_CREATE_REFCLASS after call this
  */
-#define BEGIN_CREATE_REFCLASS(__NAME__, __REF_CLASS__) 	\
-class __NAME__ : public __REF_CLASS__                  	\
-{                                                   	\
-public:                                              	\
-    ZY_CREATE_FUNC(__NAME__);                           \
-    virtual bool init();                               	\
-    virtual std::string toString(int nTab = 2);        	\
-    virtual void log();                                 \
-    __NAME__();                                         \
-private:                                               	\
-	const std::string p_sClassName = #__NAME__;         \
+#define BEGIN_CREATE_REFCLASS(__NAME__, __REF_CLASS__, ...) 	        \
+class ZY_REF __NAME__ : GLO __REF_CLASS__, ##__VA_ARGS__                \
+{                                                   	                \
+GLO:                                              	                    \
+    ZY_CREATE_FUNC(__NAME__);                                           \
+    VIR bool init();                               	                    \
+    VIR std::string toString(int nTab = 2);        	                    \
+    VIR void log();                                                     \
+	VIR ~__NAME__();                                                    \
+    __NAME__();                                                         \
+PRI:                                                                    \
+	const std::string p_sClassName = #__NAME__;                         \
 
 #define END_CREATE_REFCLASS };
 
@@ -176,11 +205,11 @@ private:                                               	\
  * 	@warning Must call END_CREATE_INSTANCE_REFCLASS after call this
  * 	@warning Declare sp_pInstance = nullptr at the source file
  */
-#define BEGIN_CREATE_INSTANCE_REFCLASS(__NAME__, __REF_CLASS__)                          	\
-class __NAME__ : public __REF_CLASS__                                                    	\
+#define BEGIN_CREATE_INSTANCE_REFCLASS(__NAME__, __REF_CLASS__, ...)                        \
+class ZY_INS __NAME__ : GLO __REF_CLASS__, ##__VA_ARGS__                                    \
 {                                                                                        	\
-public:                                                                                  	\
-	static __NAME__* getInstance()                                              	 	 	\
+GLO:                                                                                  	    \
+	STT __NAME__* getInstance()                                              	 	 	    \
     {                                                                                    	\
 		if(!sp_pInstance)                                                                	\
 		{                                                                                	\
@@ -190,17 +219,18 @@ public:                                                                         
 		}                                                                                	\
 		return sp_pInstance;                                                             	\
 	}                                                                                       \
-    static void selfDestroyInstance()                                                    	\
+    STT void selfDestroyInstance()                                                    	    \
 	{                                                                                       \
     	CC_SAFE_RELEASE_NULL(__NAME__::sp_pInstance);                                       \
 	}																						\
-	virtual bool init();                                                                 	\
-    virtual std::string toString(int nTab = 2);                                          	\
-    virtual void log();                                                                  	\
-	__NAME__();                                                                          	\
-private:                                                                                 	\
+	VIR bool init();                                                                 	    \
+    VIR std::string toString(int nTab = 2);                                          	    \
+    VIR void log();                                                                  	    \
+	VIR ~__NAME__();                                                                        \
+	__NAME__();                                                                             \
+PRI:                                                                                 	    \
 	static __NAME__* sp_pInstance;                                                       	\
-	const std::string p_sClassName = #__NAME__;         \
+	const std::string p_sClassName = #__NAME__;                                             \
 
 #define END_CREATE_INSTANCE_REFCLASS };
 
@@ -239,7 +269,7 @@ private:                                                                        
 class __NAME__                        						\
 {                                                     		\
 public:                                                     \
-    static __NAME__* create()         						\
+    STT __NAME__* create()         							\
 	{                                    					\
     	auto ret = new (std::nothrow) __NAME__();       	\
     	if(ret && ret->init())           					\
@@ -249,18 +279,19 @@ public:                                                     \
     	CC_SAFE_DELETE(ret);             					\
     	return nullptr;                                 	\
 	}														\
-    virtual bool init();                               		\
-    virtual std::string toString(int nTab = 2);        		\
-    virtual void log();                                 	\
-    __NAME__();                                         	\
+    VIR bool init();                               			\
+    VIR STR toString(int nTab = 2);        					\
+    VIR void log();                                 		\
+    __NAME__();                                             \
+    ~__NAME__();                                            \
 private:                                               		\
-	std::string p_sClassName = #__NAME__;                   \
+	STR p_sClassName = #__NAME__;                   		\
 
 #define END_CREATE_CLASS };
 
 #define END_CREATE_CLASS_WITH_TYPE_DEF(__NAME__, __TYPE_DEF__) \
-using __TYPE_DEF__ = __NAME__;                                 \
 };                                                             \
+	QUICK_USING(__NAME__, __TYPE_DEF__);                       \
 
 /**
  * 	@des Easy write down the log() function
@@ -354,9 +385,19 @@ inline static void cleaner(__TYPE__ *pElement) \
 ///////////////////] QUICK COMMENT MACROS ZONE
 
 /**
- * Mark the class as an abstract class
+ * Mark the class as an abstract class.
  */
 #define ZY_ABS
+
+/**
+ * Mark the class as an inherited (child) class.
+ */
+#define ZY_REF
+
+/**
+ * Mark the class as an instance (singleton) class.
+ */
+#define ZY_INS
 
 #define MARK_CONSTRUCTOR /** @def Begin implement all Constructor function */
 #define MARK_VIRTUAL /** @def Begin implement all Virtual function */
@@ -369,8 +410,38 @@ inline static void cleaner(__TYPE__ *pElement) \
 #define VIR virtual
 #define CON const
 #define STT static
+#define INL inline
+
+#define STR std::string
+
+/**
+ * @def A lazy way to call protected.
+ * @note The protected parameter should have the 'm_' as the prefix.
+ * @example m_fTest: a protected float variable name 'Test' that declared in this.
+ */
+#define MEM protected
+
+/**
+ * @def Other way to call protected, same as 'MEM'
+ */
+#define PRO protected
+
+/**
+ * @def A lazy way to call private.
+ * @note The private parameter should have the 'p_' as the prefix.
+ * @example p_fTest: a private float variable name 'Test' that declared in this.
+ */
+#define PRI private
+
+/**
+ * @def A lazy way to call public.
+ * @note The public (global) parameter should have the 'g_' as the prefix.
+ * @example g_fTest: a public float variable name 'Test' that declared in this.
+ */
+#define GLO public
 
 #define QUICK_GET_INSTANCE(_NAME_) _NAME_::getInstance()
+#define QGI(_NAME_) QUICK_GET_INSTANCE(_NAME_)
 
 ///////////////////] QUICK CLASS MACROS ZONE
 
@@ -423,6 +494,16 @@ inline static void cleaner(__TYPE__ *pElement) \
  */
 #define QUICK_CHP(_CHP_, ...) QUICK_VAR(const char, _CHP_, ##__VA_ARGS__)
 
+/**
+ * @def List all your bool variable here.
+ * @prama _BOOL_ Your first variable name.
+ * @prama ... All your next variable name.
+ * @note You can put the '*' in your prefix variable to make it a pointer
+ */
+#define QUICK_BOOL(_BOOL_, ...) QUICK_VAR(bool, _BOOL_, ##__VA_ARGS__)
+
+#define QUICK_USING(_NAME_, _SHORT_CUT_) using _SHORT_CUT_ = _NAME_
+
 #define GET_CLASS_ADDRESS(__TYPE__, __VARIABLE__)\
 { \
 std::stringstream ss; \
@@ -430,6 +511,8 @@ ss << __VARIABLE__; \
 std::string address = ss.str(); \
 CCLOG("Address: %s", address.c_str()); \
 } \
+
+///////////////////] SHADER HELPER
 
 #define SET_UNIFORM(ps, name, value)  do {   \
 decltype(value) __v = value;                           \
@@ -443,8 +526,9 @@ auto __loc = (ps)->getUniformLocation(name);  \
 (ps)->setTexture(__loc, idx, __v);  \
 } while(false)
 
+///////////////////] GENERIC MACROS
+
 /**
- * Generic macros
  * @namespace zy
  * @{
  */
