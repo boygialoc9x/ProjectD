@@ -78,6 +78,9 @@ list(APPEND GAME_SOURCE
 
         Classes/Attribute/Attribute.cpp
         Classes/Attribute/IngameAttribute.cpp
+
+        Classes/GameObject/GameObject.cpp
+        Classes/GameObject/SelectableObject.cpp
      )
 list(APPEND GAME_HEADER
         Classes/AppDelegate.h
@@ -108,6 +111,9 @@ list(APPEND GAME_HEADER
 
         Classes/Attribute/Attribute.h
         Classes/Attribute/IngameAttribute.h
+
+        Classes/GameObject/GameObject.h
+        Classes/GameObject/SelectableObject.h
      )
 
 if(ANDROID)
